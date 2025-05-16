@@ -72,27 +72,57 @@ class SaleItem(Base):
     sale    = relationship("Sale",    back_populates="items")
     product = relationship("Product", back_populates="sale_items")
 
+# class Inventory(Base):
+#     __tablename__ = "inventory"
+#     id                 = Column(Integer, primary_key=True, index=True)
+#     product_id         = Column(Integer, ForeignKey("products.id"), unique=True, nullable=False)
+#     quantity_on_hand   = Column(Integer, nullable=False)
+#     reorder_threshold  = Column(Integer, nullable=False)
+
+
+
+#     product = relationship("Product", back_populates="inventory")
+#     logs    = relationship("InventoryHistory", back_populates="inventory")
+
+# class InventoryHistory(Base):
+#     __tablename__ = "inventory_history"
+#     id         = Column(Integer, primary_key=True, index=True)
+#     product_id = Column(Integer, ForeignKey("products.id"), nullable=False)
+#     change_qty = Column(Integer, nullable=False)
+#     reason     = Column(String(255), nullable=False)
+#     changed_at = Column(DateTime(timezone=True), server_default=func.now())
+
+#     product   = relationship("Product", back_populates="inventory_history")
+#     inventory = relationship(
+#         "Inventory",
+#         primaryjoin="InventoryHistory.product_id==Inventory.product_id",
+#         back_populates="logs")
 class Inventory(Base):
     __tablename__ = "inventory"
-    id                 = Column(Integer, primary_key=True, index=True)
-    product_id         = Column(Integer, ForeignKey("products.id"), unique=True, nullable=False)
-    quantity_on_hand   = Column(Integer, nullable=False)
-    reorder_threshold  = Column(Integer, nullable=False)
 
+    id                = Column(Integer, primary_key=True, index=True)
+    product_id        = Column(Integer, ForeignKey("products.id"), unique=True, nullable=False)
+    quantity_on_hand  = Column(Integer, nullable=False)
+    reorder_threshold = Column(Integer, nullable=False)
+
+    # relationships
     product = relationship("Product", back_populates="inventory")
-    logs    = relationship("InventoryHistory", back_populates="inventory")
+    logs    = relationship(
+        "InventoryHistory",
+        back_populates="inventory",
+        cascade="all, delete-orphan"
+    )
 
 class InventoryHistory(Base):
     __tablename__ = "inventory_history"
-    id         = Column(Integer, primary_key=True, index=True)
-    product_id = Column(Integer, ForeignKey("products.id"), nullable=False)
-    change_qty = Column(Integer, nullable=False)
-    reason     = Column(String(255), nullable=False)
-    changed_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    product   = relationship("Product", back_populates="inventory_history")
-    inventory = relationship(
-        "Inventory",
-        primaryjoin="InventoryHistory.product_id==Inventory.product_id",
-        back_populates="logs"
-    )
+    id           = Column(Integer, primary_key=True, index=True)
+    inventory_id = Column(Integer, ForeignKey("inventory.id"), nullable=False)
+    product_id   = Column(Integer, ForeignKey("products.id"),   nullable=False)
+    change_qty   = Column(Integer, nullable=False)
+    reason       = Column(String(255), nullable=False)
+    changed_at   = Column(DateTime(timezone=True), server_default=func.now())
+
+    # relationships
+    inventory = relationship("Inventory", back_populates="logs")
+    product   = relationship("Product",   back_populates="inventory_history")

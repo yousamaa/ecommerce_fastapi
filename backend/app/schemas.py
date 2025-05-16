@@ -18,7 +18,7 @@ class Category(CategoryBase):
     children: List["Category"] = []
 
     class Config:
-        orm_mode = True
+        model_config = ConfigDict(from_attributes=True)
 
 Category.update_forward_refs()
 
@@ -40,7 +40,7 @@ class Product(ProductBase):
     category: Category
 
     class Config:
-        orm_mode = True
+        model_config = ConfigDict(from_attributes=True)
 
 # --- Sale Items (used inside Sale) ---
 class SaleItemBase(BaseModel):
@@ -57,7 +57,7 @@ class SaleItem(SaleItemBase):
     sale_id: int
 
     class Config:
-        orm_mode = True
+        model_config = ConfigDict(from_attributes=True)
 
 # --- Sales ---
 class SaleBase(BaseModel):
@@ -74,7 +74,7 @@ class Sale(SaleBase):
     items: List[SaleItem] = []
 
     class Config:
-        orm_mode = True
+        model_config = ConfigDict(from_attributes=True)
 
 # --- Inventory ---
 class InventoryBase(BaseModel):
@@ -89,7 +89,7 @@ class Inventory(InventoryBase):
     id: int
 
     class Config:
-        orm_mode = True
+        model_config = ConfigDict(from_attributes=True)
 
 # --- Inventory History ---
 class InventoryHistoryBase(BaseModel):
