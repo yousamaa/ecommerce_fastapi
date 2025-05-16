@@ -13,4 +13,4 @@ def list_all(
     limit:      int = 100,
     db:         Session = Depends(database.get_db)
 ):
-    return crud.sale_items.list_sale_items(db, product_id, sale_id, skip, limit)
+    return crud.sales_items.list_sale_items(db, product_id, sale_id, skip, limit)

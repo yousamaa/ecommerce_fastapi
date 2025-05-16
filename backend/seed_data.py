@@ -16,7 +16,7 @@ def clear_tables(db):
 def populate_db():
     db = SessionLocal()
 
-    clear_tables(db)
+    # clear_tables(db)
 
     # 1. Add parent Categories
     electronics   = models.Category(name="Electronics")

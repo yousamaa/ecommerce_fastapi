@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from .. import models, schemas
+from typing import Optional
 
 def record_inventory_change(
     db:     Session,

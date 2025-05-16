@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from typing import Optional
 from .. import models, schemas
+import datetime
 
 def create_sale(db: Session, sale_in: schemas.SaleCreate):
     db_sale = models.Sale(
