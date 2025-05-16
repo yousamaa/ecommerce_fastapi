@@ -94,6 +94,7 @@ class Inventory(InventoryBase):
 # --- Inventory History ---
 class InventoryHistoryBase(BaseModel):
     product_id: int
+    inventory_id: int
     change_qty: int
     reason: str
 
