@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import Optional, List
 from pydantic import ConfigDict
 
+
 # --- Categories ---
 class CategoryBase(BaseModel):
     name: str
@@ -107,3 +108,38 @@ class InventoryHistory(InventoryHistoryBase):
 
 class Config:
     model_config = ConfigDict(from_attributes=True)
+
+
+# ——— Sales analytics response ———
+class RevenueResponse(BaseModel):
+    period: str
+    total_amount: float
+
+    class Config:
+        model_config = ConfigDict(from_attributes=True)
+
+# ——— Inventory updates ———
+class InventoryUpdate(BaseModel):
+    quantity_on_hand: Optional[int] = None
+    reorder_threshold: Optional[int] = None
+
+    class Config:
+        model_config = ConfigDict(from_attributes=True)
+
+# -- for /sales/compare --
+class PeriodRevenue(BaseModel):
+    start:   str
+    end:     str
+    revenue: float
+
+    class Config:
+        model_config = ConfigDict(from_attributes=True)
+
+class SalesComparison(BaseModel):
+    period1:        PeriodRevenue
+    period2:        PeriodRevenue
+    difference:     float
+    percent_change: Optional[float]
+
+    class Config:
+        model_config = ConfigDict(from_attributes=True)

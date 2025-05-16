@@ -1,20 +1,20 @@
 from fastapi import FastAPI
-from .routers import (
-    categories,
-    products,
-    sales,
-    sale_items,
-    inventory,
-)
+
+# import the router objects from each module
+from app.routers.categories   import router as categories_router
+from app.routers.products     import router as products_router
+from app.routers.sales        import router as sales_router
+from app.routers.sale_items   import router as sale_items_router
+from app.routers.inventory    import router as inventory_router
 
 app = FastAPI(title="E-commerce Admin API")
 
-# include each router directly, not via .router
-app.include_router(categories)
-app.include_router(products)
-app.include_router(sales)
-app.include_router(sale_items)
-app.include_router(inventory)
+# wire up each router
+app.include_router(categories_router)
+app.include_router(products_router)
+app.include_router(sales_router)
+app.include_router(sale_items_router)
+app.include_router(inventory_router)
 
 
 @app.get("/")
